@@ -53,18 +53,19 @@ router.post(
 
       if (emailExists) errors.email = 'User with that email already exists';
       if (usernameExists) errors.username = 'User with that username already exists';
-
+      
       if (Object.keys(errors).length) {
         const err = new Error('User already exists');
-        err.status = 500;
+        err.status = 403; 
         err.errors = errors;
         return next(err); 
       }
+      
 
     const hashedPassword = bcrypt.hashSync(password);
     
-    const user = await User.create({ email, username, hashedPassword,  firstName,
-      lastName,  });
+    const user = await User.create({ email, username, hashedPassword, firstName, lastName });
+
 
     const safeUser = {
       id: user.id,
@@ -80,6 +81,7 @@ router.post(
       user: safeUser
     });
   } catch (err) {
+    console.error(err); 
     next(err);
   }
   }
