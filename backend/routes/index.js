@@ -19,11 +19,18 @@ router.get('/hello/world', function(req, res) {
 //   });
 
 // Add a XSRF-TOKEN cookie in development
-if (process.env.NODE_ENV !== 'production') {
-  router.get('/api/csrf/restore', (req, res) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-    return res.json({});
-  });
-}
+// used for when frontend and backend are on the same server
+// if (process.env.NODE_ENV !== 'production') {
+//   router.get('/api/csrf/restore', (req, res) => {
+//     res.cookie('XSRF-TOKEN', req.csrfToken());
+//     return res.json({});
+//   });
+// }
+
+// used when frontend and backend are on different servers
+router.get('/api/csrf/restore', (req, res) => {
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  return res.status(200).json({});
+});
 
 module.exports = router;
