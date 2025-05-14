@@ -565,4 +565,29 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
   }
 );
 
+  // Get details of a spot by id
+
+  router.get('/:spotId', async (req, res, next) => {
+    const { spotId } = req.params;
+
+    const spot = await Spot.findByPk(spotId, {
+      include: [
+        { model: SpotImage,
+        attributes: ['id', 'url', 'preview']
+        },
+        {
+          model: User,
+          as: 'Owner',
+          attributes: ['id', 'firstName', 'lastName']
+        }
+      ]
+    });
+  
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+  
+    res.status(200).json(spot);
+  });
+  
 module.exports = router;
