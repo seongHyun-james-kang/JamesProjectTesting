@@ -47,7 +47,35 @@ export default function spotsReducer(state = initialState, action) {
         ...state,
         [action.spot.id]: action.spot
       };
+
+      // this is saying hey Redux reducer, i'm sending you an action saying: "here's all the spot data, stored by ID"
+      case 'spots/LOAD_ALL': 
+      return {
+        ...action.spots
+      };
+
+
     default:
       return state;
   }
 }
+
+
+// Thunk, fetch all spots
+
+export const getAllSpots = () => async (dispatch) => {
+    const res = await fetch('/api/spots');
+    const data = await res.json();
+    
+    // Normalize Spots by ID
+    const normalized = {};
+    data.Spots.forEach(spot=> {
+        normalized[spot.id] = spot;
+    });
+    
+    dispatch({
+        type: 'spots/LOAD_ALL',
+        spots: normalized
+    });
+}
+    
