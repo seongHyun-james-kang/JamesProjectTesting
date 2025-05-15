@@ -589,5 +589,5 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
   
     res.status(200).json(spot);
   });
-  
+
 module.exports = router;

@@ -1,10 +1,19 @@
+// Import React and hooks
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+// Import the thunk to create a spot
+// import { createSpot } from '../../store/spots';
+
+
 import { Navigate } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 
 function SignupFormPage() {
   const dispatch = useDispatch();
+
+// Controlled input state for each form field
+
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");

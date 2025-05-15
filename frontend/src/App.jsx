@@ -8,6 +8,9 @@ import * as sessionActions from './store/session';
 import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 import Navigation from './components/Navigation/Navigation';
 
+// Import SpotFormPage  component
+import SpotFormPage from './components/SpotFormPage/SpotFormPage';
+
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -41,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignupFormPage />
+      },
+      {
+        path:"/spots/new", // updated spots route
+        element: <SpotFormPage />
       }
     ]
   }
@@ -49,5 +56,8 @@ const router = createBrowserRouter([
 function App() {
   return <RouterProvider router={router} />;
 }
+
+
+
 
 export default App;
