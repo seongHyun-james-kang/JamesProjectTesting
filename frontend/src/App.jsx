@@ -6,9 +6,10 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import LoginFormPage from './components/LoginFormModal/LoginFormModal';
 import * as sessionActions from './store/session';
 import SignupFormPage from './components/SignupFormPage/SignupFormPage';
-import Navigation from './components/Navigation/Navigation';
+
 import SpotListPage from './components/SpotListPage/SpotListPage';
 import SpotDetailPage from './components/SpotDetailPage/SpotDetailPage';
+import Header from './components/Navigation/Header';
 
 // Import SpotFormPage  component
 import SpotFormPage from './components/SpotFormPage/SpotFormPage';
@@ -25,9 +26,9 @@ function Layout() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Outlet />}
-    </>
+    <Header />
+    {isLoaded && <Outlet />}
+  </>
   );
 }
 

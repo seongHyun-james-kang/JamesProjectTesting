@@ -5,14 +5,16 @@ import { useNavigate } from 'react-router-dom';
 
 // import the thunk to create spot
 import { createSpot } from '../../store/spots';
-
+import { csrfFetch } from '../../store/csrf';
 
 
 function SpotFormPage() {
   const dispatch = useDispatch(); // Access Redux dispatch
   const navigate = useNavigate();
+
   
   // input state
+  
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [stateName, setStateName] = useState('');
@@ -20,6 +22,7 @@ function SpotFormPage() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   // Submit handler
   const handleSubmit = async (e) => {
@@ -40,6 +43,16 @@ function SpotFormPage() {
     // const result = await dispatch(createSpot(newSpot));
     const createdSpot = await dispatch(createSpot(newSpot));
 
+    // once the spot is created, add the image
+    await csrfFetch(`/api/spots/${createdSpot.id}/images`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: imageUrl,
+          preview: true
+        })
+      });
+
     // Redirect to detail page of newly created spot
     navigate(`/spots/${createdSpot.id}`);
 
@@ -59,6 +72,7 @@ function SpotFormPage() {
       <input placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)} required />
       <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
       <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+      <input placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
       <button type="submit">Create Spot</button>
     </form>
 

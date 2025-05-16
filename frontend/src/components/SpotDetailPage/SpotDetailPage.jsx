@@ -1,91 +1,66 @@
-// import react and hooks
-import { useEffect } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom'; //  get spotId from the URL
+import { useDispatch, useSelector } from 'react-redux'; //  dispatch thunk and access Redux state
+import { fetchSpotDetails } from '../../store/spots'; // thunk to get spot details from backend
+import './SpotDetailPage.css'; // CSS file for this page
 
+export default function SpotDetailPage() {
+  const { spotId } = useParams(); // get spotId from URL
+  const dispatch = useDispatch(); // set dispatch variable
 
+  const spot = useSelector((state) => state.spots.singleSpot); // grab spot details from Redux
 
-// import thunk to fetch a single spot by ID
-import { getSpotById } from '../../store/spots';
-
-// import flat color icons
-import {
-    FcHome,
-    FcGlobe,
-    FcMoneyTransfer,
-    FcDocument,
-    FcPortraitMode,
-    FcCamera
-  } from 'react-icons/fc';
-
-
-function SpotDetailPage() {
-    const { spotId } = useParams(); // Gets spotId from URL
-    const dispatch = useDispatch(); // Used to dispatch Redux actions
-
-    // Get the spot from Redux using the ID
-    const spot = useSelector(state => state.spots[spotId]);
-
-  // run once on component mount to fetch spot details
   useEffect(() => {
-    dispatch(getSpotById(spotId)); // Calls backend GET /api/spots/:spotId
+    dispatch(fetchSpotDetails(spotId)); // fetch spot details when page loads
   }, [dispatch, spotId]);
 
-  // while loading (before redux has data)
-  if (!spot) return <p>Loading spot details...</p>;
+  // If spot data hasn't loaded yet, show loading message
+  if (!spot || !spot.SpotImages) return <div>Loading...</div>;
 
-return (
-    <div style ={{ padding: '20px' }}>
-        {/* SPOT name with ICON */}
-        <h2><FcHome style = {{marginRight: '8px'}} /> {spot.name} </h2>
+  // Get preview image (main)
+  const previewImg = spot.SpotImages.find(img => img.preview === true);
 
-    {/* location*/}
-    <p>
-        <FcGlobe style= {{ marginRight: '8px'}} />
-        <strong>Location:</strong> {spot.address}, {spot.city}, {spot.state}, {spot.country}
-    </p>
-    {/* price */}
-    <p>
-        <FcMoneyTransfer style= {{ marginRight: '8px'}} />
-        <strong>Price per night:</strong> ${spot.price}
-    </p>
+  // Get first four nonpreview images
+  const otherImgs = spot.SpotImages.filter(img => img.preview !== true).slice(0, 4);
 
-    {/* Description */}
-    <div>
-        <FcDocument style= {{ marginRight: '8px'}} />
-        <strong>Description:</strong>
-        <p>{spot.description}</p>
-    </div>
-
-    {/* Hosted by */}
-    {spot.Owner && (
-    <p>
-        <FcPortraitMode style= {{ marginRight: '8px'}} />
-        <strong>Hosted by:</strong> {spot.Owner.firstName} {spot.Owner.lastName}    
-    </p>
-    )}
-
-      {/* Spot Images */}
-      {spot.SpotImages?.length > 0 && (
-        <div>
-          <h3><FcCamera style={{ marginRight: '8px' }} />Photos:</h3>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {spot.SpotImages.map((img) => (
-              <img
-                key={img.id}
-                src={img.url}
-                alt={spot.name}
-                style={{ width: '200px', borderRadius: '8px' }}
-              />
-            ))}
-          </div>
+  return (
+    <div className="spot-detail-container">
+        {/*Spot name/title/location/image containers*/}
+      <h1 className="spot-title">{spot.name}</h1>
+      <p className="spot-location">{spot.city}, {spot.state}, {spot.country}</p>
+      <div className="spot-images-container">
+        <img
+          src={previewImg ? previewImg.url : ''}
+          alt="Main Preview"
+          className="preview-image"
+        />
+        {/*Spot other images */}
+        <div className="other-images-grid">
+          {otherImgs.map((image, index) => (
+            <img
+              key={index}
+              src={image.url}
+              alt={`Spot image ${index + 1}`}
+              className="other-image"
+            />
+          ))}
         </div>
-      )}
+      </div>
+          {/*Other info section */}
+      <div className="spot-info-section">
+        <div className="spot-description-container">
+          <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
+          <p>{spot.description}</p>
+        </div>
+          {/*Spot rserve/price rate */}
+        <div className="reserve-card">
+          <div className="price-and-rating">
+            <p><strong>${spot.price}</strong> night</p>
+            <p>★ {spot.avgStarRating ? spot.avgStarRating.toFixed(1) : '0.0'} · {spot.numReviews} reviews</p>
+          </div>
+          <button className="reserve-button">Reserve</button>
+        </div>
+      </div>
     </div>
-
-    );
- }
-
-export default SpotDetailPage;
-
-
+  );
+}

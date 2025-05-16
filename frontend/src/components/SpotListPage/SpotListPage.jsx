@@ -33,7 +33,7 @@ function SpotListPage() {
           onClick={() => navigate(`/spots/${spot.id}`)}
         >
           <img
-            src={spot.previewImage || 'https://via.placeholder.com/250'}
+            src={spot.previewImage || 'https://source.unsplash.com/random/250x160'}
             alt={spot.name}
             style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }}
           />

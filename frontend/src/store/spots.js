@@ -41,6 +41,7 @@ const initialState = {};
 // Reducer function to handle spot actions
 export default function spotsReducer(state = initialState, action) {
   switch (action.type) {
+
     case CREATE_SPOT:
         // Add the new spot to the state using its ID as the key
       return {
@@ -54,6 +55,11 @@ export default function spotsReducer(state = initialState, action) {
         ...action.spots
       };
 
+      case 'spots/ADD_ONE':
+        return {
+          ...state,
+          [action.spot.id]: action.spot
+        };  
 
     default:
       return state;
@@ -78,4 +84,15 @@ export const getAllSpots = () => async (dispatch) => {
         spots: normalized
     });
 }
+
+// Thunk to fetch a single spot by ID
+export const getSpotById = (spotId) => async (dispatch) => {
+    const res = await fetch(`/api/spots/${spotId}`);
+    const data = await res.json();
+  
+    dispatch({
+      type: 'spots/ADD_ONE',
+      spot: data
+    });
+  };
     
