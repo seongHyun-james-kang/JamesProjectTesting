@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom'; //  get spotId from the URL
 import { useDispatch, useSelector } from 'react-redux'; //  dispatch thunk and access Redux state
-import { fetchSpotDetails } from '../../store/spots'; // thunk to get spot details from backend
+import { getSpotById } from '../../store/spots';// thunk to get spot details from backend
 import './SpotDetailPage.css'; // CSS file for this page
 
 export default function SpotDetailPage() {
@@ -11,7 +11,7 @@ export default function SpotDetailPage() {
   const spot = useSelector((state) => state.spots.singleSpot); // grab spot details from Redux
 
   useEffect(() => {
-    dispatch(fetchSpotDetails(spotId)); // fetch spot details when page loads
+    dispatch(getSpotById(spotId)); // fetch spot details when page loads
   }, [dispatch, spotId]);
 
   // If spot data hasn't loaded yet, show loading message
