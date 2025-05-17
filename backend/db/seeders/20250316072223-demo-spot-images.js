@@ -29,12 +29,13 @@ module.exports = {
         { spotId: 3, url: 'https://cdn.liverez.com/5/11273/1/175665/800/1.jpg', preview: false },
         { spotId: 3, url: 'https://escapetoblueridge.icnd-cdn.com/images/blog/LonesomeDoveDusk2.jpg', preview: false },
         { spotId: 3, url: 'https://www.nps.gov/common/uploads/cropped_image/primary/FD2DE9D9-097B-CEA3-C7AE93B399A45EE4.jpg?width=1600&quality=90&mode=crop', preview: false },
+        
         // SpotId: 4
         { spotId: 4, url: 'https://rare-gallery.com/uploads/posts/906272-Cyberpunk-2077-building-sunlight-apartments-clouds.png', preview: true },
         { spotId: 4, url: 'https://i.redd.it/rm1ae1fibocc1.jpeg', preview: false },
         { spotId: 4, url: 'https://v.etsystatic.com/video/upload/q_auto/CyberpunkLivingRoom2_preview_watermarked_dmtdob.jpg', preview: false },
         { spotId: 4, url: 'https://i.ytimg.com/vi/5-XmkKxCLbY/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAkYf8t1nJDl2EeR5llnJsNUqYHMg', preview: false },
-        { spotId: 4, url: 'https://static.wikia.nocookie.net/cyberpunk/images/8/89/Glen_Apartment_Infobox_CP2077.jpg/revision/latest?cb=20230216132143', preview: false },
+        { spotId: 4, url: 'https://i.ytimg.com/vi/LLBCDkq4QjE/sddefault.jpg', preview: false },
    
       
       ]);
