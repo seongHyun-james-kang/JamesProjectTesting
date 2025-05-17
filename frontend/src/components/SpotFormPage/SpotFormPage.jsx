@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import './SpotFormPage.css'
 // import the thunk to create spot
 import { createSpot } from '../../store/spots';
 import { csrfFetch } from '../../store/csrf';
@@ -14,7 +14,7 @@ function SpotFormPage() {
 
   
   // input state
-  
+
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [stateName, setStateName] = useState('');

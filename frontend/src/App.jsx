@@ -11,6 +11,8 @@ import SpotListPage from './components/SpotListPage/SpotListPage';
 import SpotDetailPage from './components/SpotDetailPage/SpotDetailPage';
 import Header from './components/Navigation/Header';
 
+
+
 // Import SpotFormPage  component
 import SpotFormPage from './components/SpotFormPage/SpotFormPage';
 
@@ -55,6 +57,10 @@ const router = createBrowserRouter([
       {
         path:"/spots/:spotId", 
         element: <SpotDetailPage />
+      },
+      {
+        path:"/spots/new", 
+        element: <CreateSpotForm />
       },
 
     ]
