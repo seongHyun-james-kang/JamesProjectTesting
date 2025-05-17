@@ -8,7 +8,8 @@ export default function SpotDetailPage() {
   const { spotId } = useParams(); // get spotId from URL
   const dispatch = useDispatch(); // set dispatch variable
 
-  const spot = useSelector((state) => state.spots.singleSpot); // grab spot details from Redux
+  const spot = useSelector((state) => state.spots[spotId]); // grab spot details from Redux
+console.log("Spot detail loaded:", spot);
 
   useEffect(() => {
     dispatch(getSpotById(spotId)); // fetch spot details when page loads

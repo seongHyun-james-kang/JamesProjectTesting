@@ -1,7 +1,7 @@
 // frontend/src/main.jsx
 
 import React from 'react'; // React is is the library itself
-import ReactDOM from 'react-dom'; // used to render React components into the DOM
+import ReactDOM from 'react-dom/client'; // used to render React components into the DOM
 import App from './App';
 import './index.css';
 import { Provider } from 'react-redux'; // A React component that connects Redux to your React app
