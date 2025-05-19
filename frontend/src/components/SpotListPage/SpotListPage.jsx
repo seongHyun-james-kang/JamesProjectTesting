@@ -1,4 +1,4 @@
-import { useEffect } from 'react'; // react hooks
+import { useMemo, useEffect } from 'react'; // react hooks
 import { useDispatch, useSelector } from 'react-redux'; //redux hooks for dispatchinga ctions and accessing state
 import { getAllSpots } from '../../store/spots'; // thunk to fetch all spots from backend
 import { useNavigate } from 'react-router-dom'; // react router hook for navigation
@@ -8,7 +8,8 @@ function SpotListPage() {
   const navigate = useNavigate(); //Allows redirecting when a spot card is clocked
 
 
-  const spots = useSelector(state => Object.values(state.spots)); // access spots from Redux state, convert object to array for looping
+  const allSpots = useSelector(state => state.spots); // get raw object from Redux
+  const spots = useMemo(() => Object.values(allSpots), [allSpots]); // memoize the array to avoid rerenders
 
   useEffect(() => {
     dispatch(getAllSpots()); // triggers the thunk to fetch from GET /api/spots

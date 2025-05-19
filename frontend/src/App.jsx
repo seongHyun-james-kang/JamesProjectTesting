@@ -28,7 +28,7 @@ function Layout() {
 
   return (
     <>
-    <Header />
+    <Header isLoaded={isLoaded} />
     {isLoaded && <Outlet />}
   </>
   );
@@ -58,11 +58,6 @@ const router = createBrowserRouter([
         path:"/spots/:spotId", 
         element: <SpotDetailPage />
       },
-      {
-        path:"/spots/new", 
-        element: <CreateSpotForm />
-      },
-
     ]
   }
 ]);

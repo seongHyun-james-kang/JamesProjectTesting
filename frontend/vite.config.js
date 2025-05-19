@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => ({
 
   // proxy is important because, to let servers go across from backend to frontend, you need CORS
   // permissions. Remember your backend port is 8000 and React frontend port is 5173.
+  
   server: {
     proxy: {
       '/api': 'http://localhost:8000'
