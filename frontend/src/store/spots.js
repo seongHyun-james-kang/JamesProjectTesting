@@ -95,4 +95,17 @@ export const getSpotById = (spotId) => async (dispatch) => {
       spot: data
     });
   };
-    
+
+// THunk is used to fetch only the spots created by the currently logged-in user.
+  export const getCurrentUserSpots = () => async (dispatch) => {
+    const res = await csrfFetch('/api/spots/current');
+    const data = await res.json();
+  
+    const normalized = {};
+    data.Spots.forEach((spot) => (normalized[spot.id] = spot));
+  
+    dispatch({
+      type: 'spots/LOAD_ALL',
+      spots: normalized
+    });
+  };
