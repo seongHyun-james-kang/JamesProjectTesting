@@ -57,8 +57,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
+
 // import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
@@ -83,7 +85,6 @@ function ProfileButton({ user }) {
       };
   
       document.addEventListener('click', closeMenu);
-  
       return () => document.removeEventListener("click", closeMenu);
     }, [showMenu]);
   
@@ -95,39 +96,50 @@ function ProfileButton({ user }) {
       closeMenu();
     };
   
-    const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+    let sessionLinks;
+
+    if (user) {
+      sessionLinks = (
+        <>
+          <li>{user.username}</li>
+          <li>{user.firstName} {user.lastName}</li>
+          <li>{user.email}</li>
+  
+          {/*  add manage Spots link */}
+          <li>
+            <Link to="/spots/current" onClick={closeMenu}>Manage Spots</Link>
+          </li>
+  
+          <li>
+            <button onClick={logout}>Log Out</button>
+          </li>
+        </>
+      );
+    } else {
+      sessionLinks = (
+        <>
+          <OpenModalMenuItem
+            itemText="Log In"
+            onItemClick={closeMenu}
+            modalComponent={<LoginFormModal />}
+          />
+          <OpenModalMenuItem
+            itemText="Sign Up"
+            onItemClick={closeMenu}
+            modalComponent={<SignupFormModal />}
+          />
+        </>
+      );
+    }
   
     return (
       <>
         <button onClick={toggleMenu}>
           <FaUserCircle />
         </button>
-        <ul className={ulClassName} ref={ulRef}>
-  {user ? (
-    <>
-      <li>{user.username}</li>
-      <li>{user.firstName} {user.lastName}</li>
-      <li>{user.email}</li>
-      <li>
-        <button onClick={logout}>Log Out</button>
-      </li>
-    </>
-  ) : (
-    <>
-      <OpenModalMenuItem
-        itemText="Log In"
-        onItemClick={closeMenu}
-        modalComponent={<LoginFormModal />}
-      />
-      <OpenModalMenuItem
-        itemText="Sign Up"
-        onItemClick={closeMenu}
-        modalComponent={<SignupFormModal />}
-      />
-    </>
-  )}
-</ul>
-
+        <ul className={`profile-dropdown${showMenu ? '' : ' hidden'}`} ref={ulRef}>
+          {sessionLinks}
+        </ul>
       </>
     );
   }

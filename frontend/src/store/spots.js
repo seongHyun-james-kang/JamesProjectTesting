@@ -100,7 +100,9 @@ export const getSpotById = (spotId) => async (dispatch) => {
   export const getCurrentUserSpots = () => async (dispatch) => {
     const res = await csrfFetch('/api/spots/current');
     const data = await res.json();
-  
+
+    console.log("🔍 Fetched current user spots:", data);
+    
     const normalized = {};
     data.Spots.forEach((spot) => (normalized[spot.id] = spot));
   

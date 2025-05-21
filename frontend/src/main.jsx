@@ -10,6 +10,7 @@ import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session'; // 
 import { Modal, ModalProvider } from './context/Modal';
 
+
 const store = configureStore(); // sets up your Redux store(with middleware, reducers)
 
 // if (process.env.NODE_ENV !== 'production') {

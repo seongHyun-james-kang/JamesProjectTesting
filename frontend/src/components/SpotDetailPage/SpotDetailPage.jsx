@@ -6,9 +6,11 @@ import './SpotDetailPage.css'; // CSS file for this page
 
 export default function SpotDetailPage() {
   const { spotId } = useParams(); // get spotId from URL
+  console.log("spotId from URL:", spotId);
+
   const dispatch = useDispatch(); // set dispatch variable
 
-  const spot = useSelector((state) => state.spots[spotId]); // grab spot details from Redux
+const spot = useSelector(state => state.spots[Number(spotId)]); // grab spot details from Redux
 console.log("Spot detail loaded:", spot);
 
   useEffect(() => {

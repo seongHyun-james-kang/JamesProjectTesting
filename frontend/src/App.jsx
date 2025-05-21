@@ -10,6 +10,7 @@ import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 import SpotListPage from './components/SpotListPage/SpotListPage';
 import SpotDetailPage from './components/SpotDetailPage/SpotDetailPage';
 import Header from './components/Navigation/Header';
+import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
 
 
 
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path:"/spots/new", // updated spots route
         element: <SpotFormPage />
+      },
+      {
+        path: "/spots/current", 
+        element: <ManageSpotsPage />
       },
       {
         path:"/spots/:spotId", 
