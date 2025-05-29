@@ -1,0 +1,91 @@
+/* Main container for the spot details */
+.spot-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  
+  /* Title and location */
+  .spot-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .spot-location {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 16px;
+  }
+  
+  /* Images layout */
+  .spot-images-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  
+  .preview-image {
+    width: 60%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .other-images-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 40%;
+  }
+  
+  .other-image {
+    width: 100%;
+    height: 195px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* Info and reserve section below images */
+  .spot-info-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  /* Description on the left */
+  .spot-description-container {
+    width: 60%;
+    line-height: 1.6;
+  }
+  
+  /* Reserve box on the right */
+  .reserve-card {
+    width: 30%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .price-and-rating {
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+  
+  .reserve-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .reserve-button:hover {
+    background-color: #e04848;
+  }
+  
