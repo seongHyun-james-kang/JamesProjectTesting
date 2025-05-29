@@ -29,7 +29,7 @@ const initialState = {}; // initial state in an empty object
 
 export default function reviewsReducer(state = initialState, action) {
     switch (action.type) {
-        case LOAD_BY_SPOT:
+        case LOAD_BY_SPOT: { // its saying i'm going to use this string to represent the action of loading all reviews for a specific spot
             const normalized = {}; // create an object to store reviews by review ID
             action.reviews.forEach(review => {
                 normalized[review.id] = review;
@@ -38,6 +38,7 @@ export default function reviewsReducer(state = initialState, action) {
                 ...state, // keep existing state
                 [action.spotId]: normalized // set normalized reviews under the spotId key
             };
+            }
             default:
                 return state; // return unchanged state
     }
