@@ -6,6 +6,7 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
+
 const { restoreUser } = require('./utils/auth');
 
 
@@ -93,7 +94,17 @@ app.use((err, _req, res, _next) => {
       //stack: isProduction ? null : err.stack
     });
   });
+  const path = require('path');
 
+  if (isProduction) {
+    app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
+  
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
+    });
+  }
+  
+  module.exports = app;
 
 
   module.exports = app;
