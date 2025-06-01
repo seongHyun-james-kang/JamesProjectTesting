@@ -29,11 +29,15 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Security Middleware
-if (!isProduction) {
-    // enable cors only in development
-    app.use(cors());
-  }
-  
+const allowedOrigins = [
+  'https://app-academy-projects-frontend.onrender.com'
+];
+app.use(
+  cors({
+    origin: isProduction ? allowedOrigins : true,
+    credentials: true
+  })
+);
   // helmet helps set a variety of headers to better secure your app
   app.use(
     helmet.crossOriginResourcePolicy({
@@ -107,4 +111,3 @@ app.use((err, _req, res, _next) => {
   module.exports = app;
 
 
-  module.exports = app;
