@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "start": "node ./bin/www", 
+    "start": "node ./bin/www",
     "start:development": "nodemon ./bin/www",
     "start:production": "node ./bin/www",
     "build": "node psql-setup-script.js"
@@ -14,7 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
@@ -36,5 +35,6 @@
     "dotenv-cli": "^8.0.0",
     "nodemon": "^3.1.9",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "description": ""
 }
