@@ -1,0 +1,17 @@
+/* SignupFormModal styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  input {
+    padding: 8px;
+  }
+  button {
+    padding: 10px;
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
