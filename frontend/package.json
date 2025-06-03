@@ -6,10 +6,11 @@
 
 "scripts": {
   "build": "npm run migrate && npm run seed && npm run build --workspace frontend",
-  "migrate": "sequelize db:migrate --env production --config backend/config/database.js",
-  "seed": "sequelize db:seed:all --env production --config backend/config/database.js",
+  "migrate": "sequelize db:migrate --env production",
+  "seed": "sequelize db:seed:all --env production",
   "start": "npm run start --workspace backend",
-  "dev": "npm run dev --workspace frontend"
+  "dev": "npm run dev --workspace frontend",
+  "setup": "npm install --prefix backend && npm install --prefix frontend && npm run migrate --prefix backend && npm run seed --prefix backend && npm run build --prefix frontend"
 },
 
 

@@ -4,15 +4,11 @@
   "main": "index.js",
 "scripts": {
   "start": "node ./bin/www",
+  "sequelize": "sequelize",
+  "migrate": "sequelize db:migrate --env production",
+  "seed": "sequelize db:seed:all --env production",
   "start:development": "nodemon ./bin/www",
-  "start:production": "node ./bin/www",
-
-  "sequelize": "sequelize --config config/database.js",
-  "sequelize-cli": "sequelize-cli",
-  "migrate": "sequelize db:migrate --env production --config config/database.js",
-  "seed": "sequelize db:seed:all --env production --config config/database.js",
-
-  "build": "node psql-setup-script.js"
+  "start:production": "node ./bin/www"
 },
 
   "keywords": [],
