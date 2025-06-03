@@ -4,7 +4,7 @@
   "description": "",
 
 "scripts": {
-  "install": "npm install --prefix backend && npm install --prefix frontend",
+  "setup": "npm install --prefix backend && npm install --prefix frontend",
   "migrate": "sequelize db:migrate --env production --config backend/config/database.js",
   "seed": "sequelize db:seed:all --env production --config backend/config/database.js",
   "build": "npm run build --prefix frontend"
