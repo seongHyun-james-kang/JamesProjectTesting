@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "workspaces": ["backend", "frontend"],
 "scripts": {
-  "install": "cd backend && npm install && cd ../frontend && npm install",
-  "build": "npm run migrate && npm run seed && npm run build --prefix frontend",
+  "install": "npm install --workspace backend && npm install --workspace frontend",
+  "build": "npm run migrate && npm run seed && npm run build --workspace frontend",
   "migrate": "sequelize db:migrate --env production --config backend/config/database.js",
   "seed": "sequelize db:seed:all --env production --config backend/config/database.js",
-  "start": "npm start --prefix backend",
-  "dev": "npm run dev --prefix frontend"
+  "start": "npm run start --workspace backend",
+  "dev": "npm run dev --workspace frontend"
 },
+
 
   "repository": {
     "type": "git",
