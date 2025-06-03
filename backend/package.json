@@ -5,8 +5,8 @@
 "scripts": {
   "start": "node ./bin/www",
   "sequelize": "sequelize",
-  "migrate": "sequelize db:migrate --env production",
-  "seed": "sequelize db:seed:all --env production",
+  "migrate": "sequelize db:migrate --env production --config ./config/database.js",
+  "seed": "sequelize db:seed:all --env production --config ./config/database.js",
   "start:development": "nodemon ./bin/www",
   "start:production": "node ./bin/www"
 },
