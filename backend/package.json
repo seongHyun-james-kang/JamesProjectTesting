@@ -2,18 +2,19 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sequelize": "sequelize --config config/database.js",
-    "migrate": "sequelize db:migrate --env production --config config/database.js",
-    "seed": "sequelize db:seed:all --env production --config config/database.js",
-    "sequelize-cli": "sequelize-cli",
-    "start": "node ./bin/www",
-    "start:development": "nodemon ./bin/www",
-    "start:production": "node ./bin/www",
-    "build": "node psql-setup-script.js"
-    
-  },
+"scripts": {
+  "start": "node ./bin/www",
+  "start:development": "nodemon ./bin/www",
+  "start:production": "node ./bin/www",
+
+  "sequelize": "sequelize --config config/database.js",
+  "sequelize-cli": "sequelize-cli",
+  "migrate": "sequelize db:migrate --env production --config config/database.js",
+  "seed": "sequelize db:seed:all --env production --config config/database.js",
+
+  "build": "node psql-setup-script.js"
+},
+
   "keywords": [],
   "author": "",
   "license": "ISC",
