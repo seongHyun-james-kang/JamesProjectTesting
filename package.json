@@ -4,11 +4,10 @@
   "description": "",
 
 "scripts": {
-  "setup": "npm install --prefix backend && npm install --prefix frontend",
-  "migrate": "npm run migrate --prefix backend",
-  "seed":   "npm run seed --prefix backend",
-  "build": "npm run build --prefix frontend"
+  "setup": "npm install --prefix backend && npm install --prefix frontend && npm run migrate --prefix backend && npm run seed --prefix backend && npm run build --prefix frontend",
+  "start": "npm start --prefix backend"
 },
+
 
   "dependencies": {},
   "devDependencies": {},
