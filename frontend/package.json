@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "workspaces": ["backend", "frontend"],
+
 "scripts": {
-  "install": "npm install --workspace backend && npm install --workspace frontend",
+  "install": "npm install --prefix backend && npm install --prefix frontend",
   "build": "npm run migrate && npm run seed && npm run build --workspace frontend",
   "migrate": "sequelize db:migrate --env production --config backend/config/database.js",
   "seed": "sequelize db:seed:all --env production --config backend/config/database.js",
