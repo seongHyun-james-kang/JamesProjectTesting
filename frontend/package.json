@@ -5,7 +5,7 @@
   "main": "index.js",
 
 "scripts": {
-  "build": "npm run migrate && npm run seed && npm run build --workspace frontend",
+
   "migrate": "sequelize db:migrate --env production",
   "seed": "sequelize db:seed:all --env production",
   "dev": "npm run dev --workspace frontend",
