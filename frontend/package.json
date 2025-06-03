@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx vite build",
+    "build": "npm run vite-build",
+    "vite-build": "node node_modules/vite/bin/vite.js build",
     "migrate": "sequelize db:migrate --env production",
     "seed": "sequelize db:seed:all --env production",
     "dev": "npm run dev --workspace frontend",
