@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "vite",
+  "build": "vite build && npm run migrate --prefix backend && npm run seed --prefix backend",
+  "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+  "preview": "vite preview",
+  "install": "npm install --prefix backend && npm install --prefix frontend",
+  "migrate": "sequelize db:migrate --env production --config backend/config/database.js",
+  "seed": "sequelize db:seed:all --env production --config backend/config/database.js"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kaidenkliegl/API-Project.git"
