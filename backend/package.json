@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
 "scripts": {
+  "build": "vite build",
   "start": "node ./bin/www",
   "sequelize": "sequelize",
   "migrate": "sequelize db:migrate --env production --config ./config/database.js --migrations-path db/migrations",
