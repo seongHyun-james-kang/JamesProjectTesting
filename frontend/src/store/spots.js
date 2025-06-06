@@ -72,7 +72,8 @@ export default function spotsReducer(state = initialState, action) {
 export const getAllSpots = () => async (dispatch) => {
   const res = await csrfFetch('/api/spots');
     const data = await res.json();
-    
+    console.log("data in get all spots", data)
+
     // Normalize Spots by ID
     const normalized = {};
     data.Spots.forEach(spot=> {
@@ -89,6 +90,7 @@ export const getAllSpots = () => async (dispatch) => {
 export const getSpotById = (spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`);
     const data = await res.json();
+  console.log("data in gets spot by ID", data)
   
     dispatch({
       type: 'spots/ADD_ONE',

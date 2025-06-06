@@ -34,7 +34,7 @@ function SpotListPage() {
           onClick={() => navigate(`/spots/${spot.id}`)}
         >
           <img
-            src={spot.previewImage || 'https://source.unsplash.com/random/250x160'}
+            src={spot.previewImage || 'https://media.istockphoto.com/id/2155335325/photo/single-family-home-with-clouds.jpg?s=1024x1024&w=is&k=20&c=YRV_yiIwVlV1ZKttYNVSgy9BrGNbn8fnT0gjgTN8QDs='}
             alt={spot.name}
             style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }}
           />

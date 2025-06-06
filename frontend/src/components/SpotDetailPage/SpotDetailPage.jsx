@@ -39,14 +39,15 @@ console.log("Spot detail loaded:", spot);
         />
         {/*Spot other images */}
         <div className="other-images-grid">
-          {otherImgs.map((image, index) => (
+          {otherImgs.map((image, index) => {
+            console.log(`image ${index}`, image.url);
             <img
               key={index}
               src={image.url}
               alt={`Spot image ${index + 1}`}
               className="other-image"
             />
-          ))}
+        })}
         </div>
       </div>
           {/*Other info section */}
