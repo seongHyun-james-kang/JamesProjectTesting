@@ -46,8 +46,8 @@
 
 // frontend/src/components/Navigation/Navigation.jsx
 import { NavLink } from 'react-router-dom';
+import ProfileButton from './ProfileButton'; // this shows the user dropdown
 import { useSelector } from 'react-redux';
-import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {

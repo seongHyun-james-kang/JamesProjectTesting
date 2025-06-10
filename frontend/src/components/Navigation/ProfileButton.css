@@ -1,0 +1,32 @@
+ /* make sure dropdown is visible */
+.profile-dropdown {
+    position: absolute;
+    top: 60px; 
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 1000;
+    min-width: 200px;
+    border: 2px solid red;
+  }
+  
+  /* style each dropdown item */
+  .profile-dropdown li {
+    list-style: none;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .profile-dropdown li:last-child {
+    border-bottom: none;
+  }
+  
+
+  .hidden {
+    display: none;
+  }

@@ -9,7 +9,8 @@ import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 
 import SpotListPage from './components/SpotListPage/SpotListPage';
 import SpotDetailPage from './components/SpotDetailPage/SpotDetailPage';
-import Header from './components/Navigation/Header';
+import Navigation from './components/Navigation/Navigation';
+
 import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
 
 
@@ -31,7 +32,7 @@ function Layout() {
 
   return (
     <>
-    <Header isLoaded={isLoaded} />
+    <Navigation isLoaded={isLoaded} />
     {isLoaded && <Outlet />}
   </>
   );
@@ -64,10 +65,6 @@ const router = createBrowserRouter([
       {
         path:"/spots/:spotId", 
         element: <SpotDetailPage />
-      },
-      {
-        path: '/spots/:spotId/edit',
-        element: <SpotFormPage isEditing={true} />
       },
       {
         path: '/spots/:spotId/edit',

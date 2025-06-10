@@ -64,6 +64,7 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 // import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import './ProfileButton.css';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -131,6 +132,7 @@ function ProfileButton({ user }) {
         </>
       );
     }
+
   
     return (
       <>
