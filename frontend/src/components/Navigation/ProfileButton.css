@@ -1,7 +1,7 @@
  /* make sure dropdown is visible */
 .profile-dropdown {
     position: absolute;
-    top: 60px; 
+    top: 50px; 
     right: 20px;
     background-color: white;
     border: 1px solid #ccc;
@@ -10,7 +10,6 @@
     border-radius: 8px;
     z-index: 1000;
     min-width: 200px;
-    border: 2px solid red;
   }
   
   /* style each dropdown item */
@@ -22,6 +21,12 @@
     border-bottom: 1px solid #eee;
   }
   
+  .profile-dropdown li:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+  }
+  
+  
   .profile-dropdown li:last-child {
     border-bottom: none;
   }
@@ -29,4 +34,18 @@
 
   .hidden {
     display: none;
+  }
+
+  button > svg {
+    font-size: 24px;
+    background-color: white;
+    padding: 6px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    color: #007aff;
+    transition: background-color 0.2s ease;
+  }
+
+  button:hover > svg {
+    background-color: #f0f0f0;
   }
