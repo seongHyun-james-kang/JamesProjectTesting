@@ -1,2 +1,8 @@
 input { margin: 4px; }
 p { color: red; }
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin: 6px 0;
+  }

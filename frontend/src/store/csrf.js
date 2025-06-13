@@ -10,7 +10,7 @@
 import Cookies from 'js-cookie'; // your backend will send a cookie called XSRF-TOKEN
 
 export async function csrfFetch(url, options = {}) {
-  // set options.method to 'GET' if there is no method
+  // set options.method to GET if there is no method
   options.method = options.method || 'GET';
   // set options.headers to an empty object if there is no headers
   options.headers = options.headers || {};
@@ -28,7 +28,8 @@ export async function csrfFetch(url, options = {}) {
   const baseUrl =
   import.meta.env.MODE === 'production'
     ? 'https://jamesprojecttesting-1.onrender.com'
-    : '';
+    : 'http://localhost:8000'; // this is the actual backend server
+
 
 const res = await window.fetch(baseUrl + url, options);
 

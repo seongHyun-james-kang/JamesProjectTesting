@@ -2,9 +2,9 @@ const express = require('express');
 require('express-async-errors');
 const morgan = require('morgan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser'); //required for csrf
 const csurf = require('csurf');
 const helmet = require('helmet');
-const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 
 const { restoreUser } = require('./utils/auth');
@@ -56,7 +56,15 @@ app.use(
     })
   );
 
-  //connect to routes
+// provide CSRF token to frontend in development
+if (!isProduction) {
+  app.get('/api/csrf/restore', (req, res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
+    return res.status(200).json({});
+  });
+}
+
+  //connect API routes
   app.use(routes);
 
 

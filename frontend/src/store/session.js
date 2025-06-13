@@ -10,13 +10,19 @@ const removeUser = () => ({ type: REMOVE_USER });
 
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
+
   const response = await csrfFetch("/api/session", {
     method: "POST",
     body: JSON.stringify({ credential, password })
   });
+  if (response.ok) {
+
   const data = await response.json();
   dispatch(setUser(data.user));
   return response;
+  } else { // this will throw response, React will jump to the .catch() block. Important!
+    throw response;
+  }
 };
 
 export const restoreUser = () => async (dispatch) => {

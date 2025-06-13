@@ -1,6 +1,6 @@
 // src/components/LoginFormModal/LoginFormModal.jsx
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'; 
@@ -14,14 +14,35 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+
+  //Reset fields on modal close
+  useEffect(() => {
+    return () => {
+      setCredential('');
+      setPassword('');
+      setErrors({});
+    };
+  }, []);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
+
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal) 
       .catch(async (res) => {
-        const data = await res.json();
-        if (data?.errors) setErrors(data.errors);
+        try {
+          const data = await res.clone().json();
+
+          if (data?.message) {
+            setErrors({ credential: data.message });
+          } else {
+            setErrors({ credential: "Login failed. Please try again." });
+          }
+        } catch {
+          setErrors({ credential: "An unexpected error occurred." });
+        }
       });
   };
 
@@ -31,14 +52,45 @@ function LoginFormModal() {
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
-          <input value={credential} onChange={(e) => setCredential(e.target.value)} required />
+          <input 
+          value={credential} 
+          onChange={(e) => setCredential(e.target.value)} 
+          required 
+        />
+
         </label>
         <label>
           Password
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input 
+          type="password" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required 
+          />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
-        <button type="submit">Log In</button>
+
+        {/*showing backend error messsage */}
+        {errors.credential && <p className="error-message">{errors.credential}</p>}
+        
+        
+        {/* disable button for invalid inputs number 10) */}
+       {}
+        <button 
+        type="submit"
+        disabled={credential.length < 4 || password.length < 6}
+        >
+          Log In
+        </button>
+      {/*Demo user login button number 15 */}
+      <button
+          type="button"
+          onClick={() =>
+            dispatch(sessionActions.login({ credential: 'DemoUser', password: 'password' }))
+              .then(closeModal)
+          }
+        >
+          Log in as Demo User
+        </button>
       </form>
     </>
   );
