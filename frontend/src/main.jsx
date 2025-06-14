@@ -21,7 +21,7 @@ const store = configureStore(); // sets up your Redux store(with middleware, red
 if (import.meta.env.MODE !== 'production') {
 
   console.log("MODE:", import.meta.env.MODE); // debug
-
+  const { restoreCSRF } = await import("./store/csrf");
   restoreCSRF(); // this sends a GET requests to /api/csrf/restore
   window.csrfFetch = csrfFetch; // attaching window becomes global
   window.store = store;

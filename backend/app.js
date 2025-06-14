@@ -30,11 +30,12 @@ app.use(express.json());
 
 // Security Middleware
 const allowedOrigins = [
-  'https://app-academy-projects-frontend.onrender.com'
+  'https://app-academy-projects-frontend.onrender.com',
+  'http://localhost:5173'
 ];
 app.use(
   cors({
-    origin: isProduction ? allowedOrigins : true,
+    origin: allowedOrigins,
     credentials: true
   })
 );

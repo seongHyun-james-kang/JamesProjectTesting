@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal'; 
+import { restoreCSRF } from '../../store/csrf';
+
 import './LoginForm.css';
 
 function LoginFormModal() {
@@ -25,16 +27,17 @@ function LoginFormModal() {
   }, []);
 
 
-  const handleSubmit = (e) => {
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-
+  
     return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal) 
+      .then(closeModal)
       .catch(async (res) => {
         try {
-          const data = await res.clone().json();
-
+          const data = await res.json();
+          console.log("Login error response:", data);
           if (data?.message) {
             setErrors({ credential: data.message });
           } else {
@@ -45,6 +48,7 @@ function LoginFormModal() {
         }
       });
   };
+
 
   return (
     <>
@@ -85,7 +89,7 @@ function LoginFormModal() {
       <button
           type="button"
           onClick={() =>
-            dispatch(sessionActions.login({ credential: 'DemoUser', password: 'password' }))
+            dispatch(sessionActions.login({ credential: 'Demo-lition', password: 'password' }))
               .then(closeModal)
           }
         >

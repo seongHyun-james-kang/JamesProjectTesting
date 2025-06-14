@@ -27,6 +27,11 @@ router.use("/spot-images", spotImagesRouter);
 
 router.use("/review-images", reviewImagesRouter);
 
+router.get("/csrf/restore", (req, res) => {
+  res.cookie("XSRF-TOKEN", req.csrfToken());
+  res.status(200).json({});
+});
+
 // Keep this route to test frontend setup in Mod 5
 router.post("/test", function (req, res) {
   res.json({ requestBody: req.body });

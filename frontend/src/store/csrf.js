@@ -31,7 +31,11 @@ export async function csrfFetch(url, options = {}) {
     : 'http://localhost:8000'; // this is the actual backend server
 
 
-const res = await window.fetch(baseUrl + url, options);
+    const res = await window.fetch(baseUrl + url, {
+      ...options,
+      credentials: 'include' // allows sending cookies,like XSRF-TOKEN
+    });
+    
 
 
   // if the response status code is 400 or above, then throw an error with the
