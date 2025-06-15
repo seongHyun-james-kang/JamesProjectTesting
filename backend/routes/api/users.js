@@ -64,7 +64,7 @@ router.post(
 
     const hashedPassword = bcrypt.hashSync(password);
     
-    const user = await User.create({ email, username, hashed_password: hashedPassword, firstName, lastName });
+    const user = await User.create({ email, username, hashedPassword: hashedPassword, firstName, lastName });
 
 
     const safeUser = {

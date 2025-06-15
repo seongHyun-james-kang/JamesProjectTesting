@@ -11,6 +11,10 @@ export default function SpotDetailPage() {
   const dispatch = useDispatch(); // set dispatch variable
 
 const spot = useSelector(state => state.spots[Number(spotId)]); // grab spot details from Redux
+const currentUser = useSelector(state => state.session.user);
+const isOwner = currentUser?.id === spot?.Owner?.id;
+
+
 console.log("Spot detail loaded:", spot);
 
   useEffect(() => {
@@ -53,6 +57,7 @@ console.log("Spot detail loaded:", spot);
 
         </div>
       </div>
+
           {/*Other info section */}
       <div className="spot-info-section">
         <div className="spot-description-container">
@@ -62,12 +67,59 @@ console.log("Spot detail loaded:", spot);
           {/*Spot rserve/price rate */}
         <div className="reserve-card">
           <div className="price-and-rating">
-            <p><strong>${spot.price}</strong> night</p>
-            <p>★ {spot.avgStarRating ? spot.avgStarRating.toFixed(1) : '0.0'} · {spot.numReviews} reviews</p>
+          <p><strong>${spot.price}</strong> / night</p>
+  
+        
+    <p> {/* this handles decimal format, "New" if no rating, dot between rating and review count, correct singular/plural grammar */}
+      <i className="fa-solid fa-star"></i>{' '}
+         {spot.avgStarRating ? Number(spot.avgStarRating).toFixed(1) : 'New'}
+         {spot.numReviews > 0 && (
+           <>
+             {' '}·{' '}
+             {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}
+          </>
+       )}
+     </p>
+
           </div>
-          <button className="reserve-button">Reserve</button>
+          <button className="reserve-button" onClick={() => alert("Feature coming soon")}>
+           Reserve
+          </button>
         </div>
+      </div> 
+      {/*REVIEWS SECTION BELOW*/}
+      <div className="reviews-container">
+        <h2>
+          <i className="fa-solid fa-star"></i>{' '}
+          {spot.avgStarRating ? Number(spot.avgStarRating).toFixed(1) : 'New'}
+          {spot.numReviews > 0 && (
+            <>
+              {' '}· {spot.numReviews} {spot.numReviews === 1 ? 'Review' : 'Reviews'}
+            </>
+          )}
+        </h2>
+
+        {spot.Reviews?.length > 0 ? (
+          [...spot.Reviews]
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map(review => (
+              <div key={review.id} className="review">
+                <h3>{review.User.firstName}</h3>
+                <p className="review-date">
+                  {new Date(review.createdAt).toLocaleString('default', {
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+                <p>{review.review}</p>
+              </div>
+            ))
+        ) : (
+          !isOwner && <p>Be the first to post a review!</p>
+        )}
       </div>
-    </div>
+    </div> 
+    
+    
   );
 }
