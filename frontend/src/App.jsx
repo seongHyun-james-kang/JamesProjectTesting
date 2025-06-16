@@ -17,6 +17,8 @@ import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
 
 // Import SpotFormPage  component
 import SpotFormPage from './components/SpotFormPage/SpotFormPage';
+//
+import BookingsPage from './components/BookingsPage/BookingsPage';
 
 
 
@@ -69,7 +71,13 @@ const router = createBrowserRouter([
       {
         path: '/spots/:spotId/edit',
         element: <SpotFormPage isEditing={true} />
+      },
+
+      {
+        path: "/bookings/current",
+        element: <BookingsPage />
       }
+
     ]
   }
 ]);

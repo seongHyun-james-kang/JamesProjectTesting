@@ -5,17 +5,21 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 // Redux Thunk lets us write functions that return functions (to handle async work like fetching from APIs)
 
 import thunk from 'redux-thunk';
-// Import the session slice of state
+// 
 
 import sessionReducer from './session';
-// Import the spots slice of state 
+// 
 
 import spotsReducer from './spots';
+
+import bookingsReducer from './bookings';
+
 
 // Combine all reducers into one big reducer (aka the root reducer)
 const rootReducer = combineReducers({
   session: sessionReducer,
-  spots: spotsReducer
+  spots: spotsReducer,
+  bookings: bookingsReducer
 });
 
 let enhancer;

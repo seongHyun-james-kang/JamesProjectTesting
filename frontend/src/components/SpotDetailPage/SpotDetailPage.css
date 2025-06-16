@@ -117,3 +117,34 @@
     font-size: 16px;
     line-height: 1.5;
   }
+
+  .post-review-button {
+    margin: 20px 0;
+    padding: 10px 16px;
+    background-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .post-review-button:hover {
+    background-color: #e04848;
+  }
+
+  .delete-review-button {
+    background-color: #ff5a5f;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .delete-review-button:hover {
+    background-color: #e04848;
+  }
+  

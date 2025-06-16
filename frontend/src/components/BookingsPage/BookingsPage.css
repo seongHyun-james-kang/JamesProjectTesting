@@ -1,0 +1,27 @@
+/* BookingsPage.css */
+
+.bookings-page {
+    padding: 20px;
+  }
+  
+  .booking-tile {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  .booking-preview {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+  }
+  
+  .booking-buttons {
+    margin-top: 10px;
+  }
+  
+  .booking-buttons button {
+    margin-right: 10px;
+  }
+  

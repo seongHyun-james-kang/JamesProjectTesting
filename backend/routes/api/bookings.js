@@ -65,10 +65,64 @@ router.get('/current', requireAuth, async (req, res) => {
   }
 );
 
+// CREATE A BOOKING FOR A SPOT
+router.post('/spots/:spotId/bookings', requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { startDate, endDate } = req.body;
+  const userId = req.user.id;
 
-  
+  if (new Date(startDate) >= new Date(endDate)) {
+    return res.status(400).json({ message: "endDate cannot be on or before startDate" });
+  }
 
+  // check if spot exists
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({ message: "Spot not found" });
+  }
 
+  // cannot book your own spot
+  if (spot.ownerId === userId) {
+    return res.status(403).json({ message: "You cannot book your own spot" });
+  }
+
+  // check for date conflicts
+  const existingBookings = await Booking.findAll({
+    where: {
+      spotId,
+      [Op.or]: [
+        { startDate: { [Op.between]: [startDate, endDate] } },
+        { endDate: { [Op.between]: [startDate, endDate] } },
+        {
+          [Op.and]: [
+            { startDate: { [Op.lte]: startDate } },
+            { endDate: { [Op.gte]: endDate } }
+          ]
+        }
+      ]
+    }
+  });
+
+  if (existingBookings.length > 0) {
+    return res.status(403).json({
+      message: "Sorry, this spot is already booked for the specified dates",
+      errors: {
+        startDate: "Conflicts with an existing booking",
+        endDate: "Conflicts with an existing booking"
+      }
+    });
+  }
+
+  // create the booking
+  const newBooking = await Booking.create({
+    userId,
+    spotId,
+    startDate,
+    endDate
+  });
+
+  return res.status(200).json(newBooking);
+});
 
 
 
@@ -79,7 +133,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
   const { user } = req;
   const userId = user.id;
 
-  //Get booking
+  // get booking
   const booking = await Booking.findByPk(req.params.bookingId);
 
   // If the booking does not exist, return a 404 error
@@ -87,7 +141,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res) => {
     return res.status(404).json({ message: "Booking not found." });
   }
 
-  //Only the owner of the booking is authorized to edit
+  // Only the owner of the booking is authorized to edit
   if (user.id !== booking.userId) {
     return res.status(403).json({ message: "Only the owner of the booking is authorized to edit." });
   }
@@ -134,7 +188,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 
   const { user } = req;
 
-  //Get booking
+  // get booking
   const booking = await Booking.findByPk(req.params.bookingId);
 
   // If the booking does not exist, return a 404 error
@@ -142,22 +196,22 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     return res.status(404).json({ message: "Booking not found." });
   }
 
-  //Get spot 
+  // get spot 
   const spot = await Spot.findByPk(booking.spotId);
 
-  //Only the owner of booking or spot is authorized to delete
+  // only the owner of booking or spot is authorized to delete
   if (!(user.id === spot.ownerId || user.id === booking.userId)) {
     return res.status(403).json({ message: "Only authorized user allowed to delete booking." });
   }
 
 
-  // Only delete future bookings
+  // only delete future bookings
   const currentDate = new Date();
   if (new Date(booking.startDate) < currentDate) {
     return res.status(400).json({ message: "Cannot delete a booking that has already started or passed." });
   }
 
-  //Delete the new booking
+  // delete the new booking
    await booking.destroy();
   
     return res.status(200).json({

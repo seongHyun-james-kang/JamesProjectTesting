@@ -191,8 +191,12 @@ router.get("/current", requireAuth, async (req, res) => {
         },
         {
           model: Review,
-          attributes: ["stars"], 
-        },
+          attributes: ["id", "userId", "review", "stars", "createdAt", "updatedAt"],
+          include: {
+            model: User,
+            attributes: ["id", "firstName", "lastName"]
+          }
+        }
       ],
     });
 
@@ -245,11 +249,22 @@ router.get("/:id", async (req, res) => {
         },
         {
           model: User, 
-          as:"Owner",
+          as: "Owner",
           attributes: ["id", "firstName", "lastName"],
         },
+        {
+          model: Review,
+          include: [
+            {
+              model: User,
+              attributes: ["firstName", "lastName"]
+            }
+          ]
+        }
       ],
     });
+
+
     if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
 
     return res.status(200).json({
@@ -270,6 +285,7 @@ router.get("/:id", async (req, res) => {
       avgStarRating,
       SpotImages: spot.SpotImages,
       Owner: spot.Owner,
+      Reviews: spot.Reviews
     });
   } catch (error) {
     console.error(error);

@@ -1,8 +1,15 @@
+//SpotDetailPage.jsx
+
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom'; //  get spotId from the URL
 import { useDispatch, useSelector } from 'react-redux'; //  dispatch thunk and access Redux state
 import { getSpotById } from '../../store/spots';// thunk to get spot details from backend
 import './SpotDetailPage.css'; // CSS file for this page
+import ReviewFormModal from '../ReviewFormModal/ReviewFormModal';
+import { useState } from 'react';
+import { csrfFetch } from '../../store/csrf';
+
+
 
 export default function SpotDetailPage() {
   const { spotId } = useParams(); // get spotId from URL
@@ -10,12 +17,20 @@ export default function SpotDetailPage() {
 
   const dispatch = useDispatch(); // set dispatch variable
 
-const spot = useSelector(state => state.spots[Number(spotId)]); // grab spot details from Redux
-const currentUser = useSelector(state => state.session.user);
-const isOwner = currentUser?.id === spot?.Owner?.id;
+  const [showModal, setShowModal] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
+  const spot = useSelector(state => state.spots[Number(spotId)]); // grab spot details from Redux
+  const currentUser = useSelector(state => state.session.user);
+  const isOwner = currentUser?.id === spot?.Owner?.id;
+  const hasUserReviewed = spot?.Reviews?.some(review => review.userId === currentUser?.id);
 
-console.log("Spot detail loaded:", spot);
+// console.log("currentUser:", currentUser);
+// console.log("isOwner:", isOwner);
+// console.log("hasUserReviewed:", hasUserReviewed);
+
+// console.log("Spot detail loaded:", spot);
 
   useEffect(() => {
     dispatch(getSpotById(spotId)); // fetch spot details when page loads
@@ -29,6 +44,41 @@ console.log("Spot detail loaded:", spot);
 
   // Get first four nonpreview images
   const otherImgs = spot.SpotImages.filter(img => img.preview !== true).slice(0, 4);
+
+  const handleBooking = async () => {
+    try {
+      const res = await csrfFetch(`/api/spots/${spot.id}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ startDate, endDate })
+      });
+      if (res.ok) {
+        alert('Booking successful!');
+        setStartDate('');
+        setEndDate('');
+        dispatch(getSpotById(spot.id)); // Refresh data
+      }
+    } catch (err) {
+      const errorData = await err.json();
+      alert(errorData.message || 'Booking failed.');
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    if (!window.confirm("Are you sure you want to delete this review?")) return;
+  
+    try {
+      const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        dispatch(getSpotById(spot.id)); // refresh reviews
+      }
+    } catch (err) {
+      const errorData = await err.json();
+      alert(errorData.message || 'Failed to delete review.');
+    }
+  };
 
   return (
     <div className="spot-detail-container">
@@ -82,11 +132,36 @@ console.log("Spot detail loaded:", spot);
      </p>
 
           </div>
-          <button className="reserve-button" onClick={() => alert("Feature coming soon")}>
-           Reserve
+          <button
+            className="reserve-button"
+            disabled={!startDate || !endDate}
+            onClick={handleBooking}
+          >
+            Reserve
           </button>
         </div>
+
+
+        <div className="booking-form">
+          <label>Start Date:
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+          </label>
+          <label>End Date:
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+          </label>
+          <button
+            disabled={!startDate || !endDate}
+            onClick={handleBooking}
+          >
+            Book Now
+          </button>
+        </div>
+
       </div> 
+
+
+
+      
       {/*REVIEWS SECTION BELOW*/}
       <div className="reviews-container">
         <h2>
@@ -99,6 +174,27 @@ console.log("Spot detail loaded:", spot);
           )}
         </h2>
 
+        {currentUser && !isOwner && !hasUserReviewed && (
+          <>
+            <button
+              className="post-review-button"
+              onClick={() => setShowModal(true)}
+            >
+              Post Your Review
+            </button>
+            {showModal && (
+          <ReviewFormModal
+            spotId={spot.id}
+            onClose={() => {
+              setShowModal(false);
+              dispatch(getSpotById(spot.id)); // 🔄 Refresh spot data after review
+            }}
+          />
+        )}
+          </>
+        )}
+         
+          
         {spot.Reviews?.length > 0 ? (
           [...spot.Reviews]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -112,6 +208,16 @@ console.log("Spot detail loaded:", spot);
                   })}
                 </p>
                 <p>{review.review}</p>
+
+                {currentUser?.id === review.userId && (
+                  <button
+                    className="delete-review-button"
+                    onClick={() => handleDeleteReview(review.id)}
+                  >
+                    Delete
+                  </button>
+                )}
+
               </div>
             ))
         ) : (
