@@ -13,13 +13,14 @@ import sessionReducer from './session';
 import spotsReducer from './spots';
 
 import bookingsReducer from './bookings';
-
+import reviewsReducer from './reviews';
 
 // Combine all reducers into one big reducer (aka the root reducer)
 const rootReducer = combineReducers({
   session: sessionReducer,
   spots: spotsReducer,
-  bookings: bookingsReducer
+  bookings: bookingsReducer,
+  reviews: reviewsReducer 
 });
 
 let enhancer;

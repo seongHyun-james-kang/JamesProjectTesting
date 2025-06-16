@@ -12,6 +12,8 @@ import SpotDetailPage from './components/SpotDetailPage/SpotDetailPage';
 import Navigation from './components/Navigation/Navigation';
 
 import ManageSpotsPage from './components/ManageSpotsPage/ManageSpotsPage';
+import ManageReviewsPage from "./components/ManageReviewsPage/ManageReviewsPage";
+
 
 
 
@@ -76,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: "/bookings/current",
         element: <BookingsPage />
+      },
+      {
+        path: "/reviews/current",
+        element: <ManageReviewsPage/>
       }
 
     ]

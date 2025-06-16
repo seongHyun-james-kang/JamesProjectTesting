@@ -5,23 +5,37 @@
   }
   
   .booking-tile {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
     border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 20px;
     border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
   
   .booking-preview {
     width: 100%;
-    max-width: 300px;
-    border-radius: 8px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 10px;
   }
   
   .booking-buttons {
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
   }
   
   .booking-buttons button {
-    margin-right: 10px;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
   }
   

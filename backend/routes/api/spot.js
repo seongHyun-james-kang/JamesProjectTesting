@@ -62,9 +62,9 @@ const validateSpot = [
 
 //Validate Spot inputs FIX
 const validateBooking = [
-  check('spotId')
-  .exists({ checkFalsy: true})
-  .withMessage('Please provide a valid spot ID.'),
+  // check('spotId')
+  // .exists({ checkFalsy: true})
+  // .withMessage('Please provide a valid spot ID.'),
   check('startDate')
     .exists({ checkFalsy: true })
     .withMessage('Please provide a valid start date.'),
@@ -284,9 +284,10 @@ router.get("/:id", async (req, res) => {
       numReviews,
       avgStarRating,
       SpotImages: spot.SpotImages,
-      Owner: spot.Owner,
-      Reviews: spot.Reviews
+      Owner: spot.Owner || null,
+      Reviews: spot.Reviews || []
     });
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error retrieving spot from id" });
@@ -532,25 +533,25 @@ if(spot.ownerId !== user.id){
 
 
 // CREATE BOOKING FROM SPOT
-router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
-  const { spotId, startDate, endDate } = req.body;
-  const { user } = req;
-  const userId = user.id;
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+  const { spotId } = req.params;
+  const { startDate, endDate } = req.body;
+  const userId = req.user.id;
+  
+  // Validate dates
+  if (new Date(startDate) >= new Date(endDate)) {
+    return res.status(400).json({ message: "endDate cannot be on or before startDate" });
+  }
 
-  //Get spot
   const spot = await Spot.findByPk(spotId);
-
-  // If the spot does not exist, return a 404 error
   if (!spot) {
     return res.status(404).json({ message: "Spot not found" });
   }
 
-  //A user is only authorized to create a booking if they do NOT own the spot
-  if (user.id === spot.ownerId) {
+  if (spot.ownerId === userId) {
     return res.status(403).json({ message: "Owner cannot book own spot" });
   }
 
-  // Check if booking is available for chosen dates
   const existingBooking = await Booking.findOne({
     where: {
       spotId,
@@ -568,16 +569,24 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) 
   });
 
   if (existingBooking) {
-    return res.status(403).json({ message: "Spot is already booked for the selected dates" });
-  }
-
-  //Create the new booking
-  const newBooking = await Booking.create({ userId, spotId, startDate, endDate });
-  
-    return res.status(201).json({
-      newBooking
+    return res.status(403).json({
+      message: "Spot is already booked for the selected dates",
+      errors: {
+        startDate: "Conflicts with an existing booking",
+        endDate: "Conflicts with an existing booking"
+      }
     });
   }
-);
+
+  const newBooking = await Booking.create({
+    userId,
+    spotId,
+    startDate,
+    endDate
+  });
+
+  return res.status(201).json(newBooking);
+});
+
 
 module.exports = router;

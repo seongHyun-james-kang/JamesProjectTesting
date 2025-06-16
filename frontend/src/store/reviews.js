@@ -1,47 +1,125 @@
+// // frontend/src/store/reviews.js
+
+// // ACTION TYPES
+// const LOAD_BY_SPOT = 'reviews/LOAD_BY_SPOT'; // Action type for loading reviews by spot ID
+
+// // Action Creators
+// const loadReviews = (spotId, reviews) => ({
+//     type: LOAD_BY_SPOT, // type of action
+//     reviews, // array of reviews
+//     spotId // spot ID for which reviews are being loaded
+// });
+
+
+// // thunk to get all reviews for a specific spot
+// // this gets your instructions and talks to the backend to retrieve the result
+
+// export const getReviewsBySpotId = (spotId) => async (dispatch) => {
+//     const res = await fetch (`/api/spots/${spotId}/reviews`); // call API to get reviews by spot
+//     if (res.ok) {
+//         const data = await res.json(); // Parse the JSON response
+//         dispatch(loadReviews(spotId, data.Reviews)); // load reviews into Redux store
+//       }
+//     };
+// // get current userreviews    
+//  export const getCurrentUserReviews = () => async (dispatch) => {
+//         const res = await fetch(`/api/reviews/current`);
+//         if (res.ok) {
+//           const data = await res.json();
+//           dispatch(loadCurrentUserReviews(data.Reviews));
+//         }
+//       };
+// // Reducer- receives all actions & decies how to update the app's memory
+
+// const initialState = {}; // initial state in an empty object
+
+// export default function reviewsReducer(state = initialState, action) {
+//     switch (action.type) {
+//         case LOAD_BY_SPOT: { // its saying i'm going to use this string to represent the action of loading all reviews for a specific spot
+//             const normalized = {}; // create an object to store reviews by review ID
+//             action.reviews.forEach(review => {
+//                 normalized[review.id] = review;
+//             });
+//             return {
+//                 ...state, // keep existing state
+//                 [action.spotId]: normalized // set normalized reviews under the spotId key
+//             };
+//             }
+//             default:
+//                 return state; // return unchanged state
+//     }
+// }
+
+
 // frontend/src/store/reviews.js
 
-// ACTION TYPES
-const LOAD_BY_SPOT = 'reviews/LOAD_BY_SPOT'; // Action type for loading reviews by spot ID
+// Action Types
+const LOAD_BY_SPOT = 'reviews/LOAD_BY_SPOT';
+const LOAD_CURRENT_USER = 'reviews/LOAD_CURRENT_USER';
 
 // Action Creators
 const loadReviews = (spotId, reviews) => ({
-    type: LOAD_BY_SPOT, // type of action
-    reviews, // array of reviews
-    spotId // spot ID for which reviews are being loaded
+  type: LOAD_BY_SPOT,
+  reviews,
+  spotId
 });
 
+const loadCurrentUserReviews = (reviews) => ({
+  type: LOAD_CURRENT_USER,
+  reviews
+});
 
-// thunk to get all reviews for a specific spot
-// this gets your instructions and talks to the backend to retrieve the result
-
+// Thunks
 export const getReviewsBySpotId = (spotId) => async (dispatch) => {
-    const res = await fetch (`/api/spots/${spotId}/reviews`); // call API to get reviews by spot
-    if (res.ok) {
-        const data = await res.json(); // Parse the JSON response
-        dispatch(loadReviews(spotId, data.Reviews)); // load reviews into Redux store
-      }
-    };
-    
+  const res = await fetch(`/api/spots/${spotId}/reviews`);
+  if (res.ok) {
+    const data = await res.json();
+    dispatch(loadReviews(spotId, data.Reviews));
+  }
+};
 
-// Reducer- receives all actions & decies how to update the app's memory
+export const getCurrentUserReviews = () => async (dispatch) => {
+  const res = await fetch(`/api/reviews/current`);
+  if (res.ok) {
+    const data = await res.json();
+    dispatch(loadCurrentUserReviews(data.Reviews));
+  }
+};
 
-const initialState = {}; // initial state in an empty object
+// Reducer
+const initialState = {
+  bySpot: {},
+  byUser: {} 
+};
 
 export default function reviewsReducer(state = initialState, action) {
-    switch (action.type) {
-        case LOAD_BY_SPOT: { // its saying i'm going to use this string to represent the action of loading all reviews for a specific spot
-            const normalized = {}; // create an object to store reviews by review ID
-            action.reviews.forEach(review => {
-                normalized[review.id] = review;
-            });
-            return {
-                ...state, // keep existing state
-                [action.spotId]: normalized // set normalized reviews under the spotId key
-            };
-            }
-            default:
-                return state; // return unchanged state
+  switch (action.type) {
+    case LOAD_BY_SPOT: {
+      const normalized = {};
+      action.reviews.forEach(review => {
+        normalized[review.id] = review;
+      });
+      return {
+        ...state,
+        bySpot: {
+          ...state.bySpot,
+          [action.spotId]: normalized
+        }
+      };
     }
+
+    case LOAD_CURRENT_USER: {
+      const normalized = {};
+      action.reviews.forEach(review => {
+        normalized[review.id] = review;
+      });
+      return {
+        ...state,
+        byUser: normalized 
+      };
+    }
+
+    default:
+      return state;
+  }
 }
-
-

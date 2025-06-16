@@ -8,7 +8,7 @@ import './BookingsPage.css';
 export default function BookingsPage() {
   const dispatch = useDispatch();
   const bookings = useSelector(state => state.bookings);
-  const bookingList = Object.values(bookings);
+  const bookingList = Object.values(bookings || {});
 
   useEffect(() => {
     dispatch(getCurrentUserBookings());

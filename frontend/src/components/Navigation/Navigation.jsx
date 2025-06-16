@@ -46,8 +46,11 @@
 
 // frontend/src/components/Navigation/Navigation.jsx
 import { NavLink } from 'react-router-dom';
-import ProfileButton from './ProfileButton'; // this shows the user dropdown
+import ProfileButton from './ProfileButton';
 import { useSelector } from 'react-redux';
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import LoginFormModal from '../LoginFormModal/LoginFormModal';
+import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -66,10 +69,24 @@ function Navigation({ isLoaded }) {
           </NavLink>
         )}
 
-        {isLoaded && <ProfileButton user={sessionUser} />}
+        {isLoaded && (
+          sessionUser
+            ? <ProfileButton user={sessionUser} />
+            : <>
+                <OpenModalButton
+                  buttonText="Log In"
+                  modalComponent={<LoginFormModal />}
+                />
+                <OpenModalButton
+                  buttonText="Sign Up"
+                  modalComponent={<SignupFormModal />}
+                />
+              </>
+        )}
       </div>
     </nav>
   );
 }
 
 export default Navigation;
+

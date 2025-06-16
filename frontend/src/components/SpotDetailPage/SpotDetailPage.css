@@ -1,11 +1,11 @@
-/* Main container for the spot details */
+/* main container for the spot details */
 .spot-detail-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px;
   }
   
-  /* Title and location */
+  /* title and location */
   .spot-title {
     font-size: 32px;
     font-weight: bold;
@@ -18,7 +18,7 @@
     margin-bottom: 16px;
   }
   
-  /* Images layout */
+  /* images layout */
   .spot-images-container {
     display: flex;
     gap: 12px;
@@ -51,6 +51,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 40px; /* 💡 Adds breathing space between left and right */
+    margin-bottom: 40px; /* optional, gives some spacing before reviews */
   }
   
   /* Description on the left */
@@ -59,15 +61,7 @@
     line-height: 1.6;
   }
   
-  /* Reserve box on the right */
-  .reserve-card {
-    width: 30%;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-  }
-  
+
   .price-and-rating {
     font-size: 16px;
     margin-bottom: 14px;
@@ -146,5 +140,66 @@
   
   .delete-review-button:hover {
     background-color: #e04848;
+  }
+  .spot-detail-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    width: 350px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-left: auto;
+  }
+
+  .reserve-header {
+    margin-bottom: 16px;
+  }
+  
+  .price {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .rating {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .booking-form {
+    width: 100%;
+  }
+  
+  .booking-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  
+  .booking-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+  }
+  
+  .booking-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .booking-form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
   

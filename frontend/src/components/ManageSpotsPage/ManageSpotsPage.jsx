@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserSpots } from '../../store/spots';
 import { useNavigate, Link } from 'react-router-dom';
 import { csrfFetch } from '../../store/csrf';
+import './ManageSpotsPage.css';
 
 // its a main component for managing user's own spots
 
@@ -39,8 +40,17 @@ function ManageSpotsPage() {
   // If user not logged in, show a message
   if (!sessionUser) return <p>Please log in to manage your spots.</p>;
   // render the manage spots UI
-  if (!spots.length) return <p>Loading...</p>;
+  if (spots === undefined) return <p>Loading...</p>; // still fetching
 
+  if (spots.length === 0) {
+  return (
+    <div className="manage-spots-page">
+      <h2>Manage Your Spots</h2>
+      <p>You haven’t created any spots yet.</p>
+      <button onClick={() => navigate('/spots/new')}>Create a New Spot</button>
+    </div>
+  );
+}
   return (
   <div className="manage-spots-page">
     <h2>Manage Your Spots</h2>
@@ -54,18 +64,25 @@ function ManageSpotsPage() {
       <div className="spot-list">
         {spots.map((spot) => (
           <div key={spot.id} className="spot-card">
-            <Link to={`/spots/${spot.id}`}>
-              <img src={spot.previewImage} alt={spot.name} />
+            <Link to={`/spots/${spot.id}`} className="spot-link">
+              <img
+                className="spot-preview-image"
+                src={spot.previewImage || 'https://via.placeholder.com/300x200'}
+                alt={spot.name}
+              />
               <h3>{spot.name}</h3>
+              <p>{spot.city}, {spot.state}</p>
+              <p><strong>${spot.price}</strong> / night</p>
+              <p>★ {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'}</p>
             </Link>
-            <p>{spot.city}, {spot.state}</p>
-            <p><strong>${spot.price}</strong> / night</p>
-            <p>★ {spot.avgRating ? Number(spot.avgRating).toFixed(1) : "New"}</p>
+
             <div className="spot-buttons">
               <button onClick={() => handleEdit(spot.id)}>Update</button>
               <button onClick={() => handleDelete(spot.id)}>Delete</button>
             </div>
           </div>
+
+
         ))}
       </div>
     )}
