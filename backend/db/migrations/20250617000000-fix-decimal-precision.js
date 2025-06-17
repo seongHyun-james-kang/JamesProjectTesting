@@ -7,38 +7,169 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Fix the precision for lat, lng, and price columns
-    await queryInterface.changeColumn('Spots', 'lat', {
-      type: Sequelize.DECIMAL(10, 6), // Changed from (10,7) to (10,6) - allows -999.999999 to 999.999999
-      allowNull: false
-    }, options);
+    // First, ensure Users table exists (required for foreign key)
+    const usersTableExists = await queryInterface.showAllTables().then(tables => {
+      const tableName = options.schema ? `${options.schema}.Users` : 'Users';
+      return tables.includes('Users') || tables.includes(tableName);
+    });
 
-    await queryInterface.changeColumn('Spots', 'lng', {
-      type: Sequelize.DECIMAL(11, 6), // Changed to (11,6) - allows -9999.999999 to 9999.999999 for longitude
-      allowNull: false
-    }, options);
+    if (!usersTableExists) {
+      // Create Users table first
+      await queryInterface.createTable('Users', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        firstName: {
+          type: Sequelize.STRING(30),
+          allowNull: false
+        },
+        lastName: {
+          type: Sequelize.STRING(30),
+          allowNull: false
+        },
+        email: {
+          type: Sequelize.STRING(256),
+          allowNull: false,
+          unique: true
+        },
+        username: {
+          type: Sequelize.STRING(30),
+          allowNull: false,
+          unique: true
+        },
+        hashedPassword: {
+          type: Sequelize.STRING.BINARY,
+          allowNull: false
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        }
+      }, options);
+    }
 
-    await queryInterface.changeColumn('Spots', 'price', {
-      type: Sequelize.DECIMAL(10, 2), // Changed to (10,2) - allows up to 99999999.99 for price
-      allowNull: false
-    }, options);
+    // Then, check if the Spots table exists, if not create it
+    const tableExists = await queryInterface.showAllTables().then(tables => {
+      const tableName = options.schema ? `${options.schema}.Spots` : 'Spots';
+      return tables.includes('Spots') || tables.includes(tableName);
+    });
+
+    if (!tableExists) {
+      // Create the Spots table with correct precision from the start
+      await queryInterface.createTable('Spots', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        ownerId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: "Users",
+            key: "id"
+          },
+          onDelete: 'CASCADE',
+        },
+        address: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        city: {
+          type: Sequelize.STRING,
+          allowNull: false
+        },
+        state: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        country: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        lat: {
+          type: Sequelize.DECIMAL(10, 6), // Fixed precision
+          allowNull: false
+        },
+        lng: {
+          type: Sequelize.DECIMAL(11, 6), // Fixed precision
+          allowNull: false
+        },
+        name: {
+          type: Sequelize.STRING(50),
+          allowNull: false
+        },
+        description: {
+          type: Sequelize.TEXT,
+          allowNull: false
+        },
+        price: {
+          type: Sequelize.DECIMAL(10, 2), // Fixed precision
+          allowNull: false
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        }
+      }, options);
+    } else {
+      // Table exists, just modify the columns
+      await queryInterface.changeColumn('Spots', 'lat', {
+        type: Sequelize.DECIMAL(10, 6),
+        allowNull: false
+      }, options);
+
+      await queryInterface.changeColumn('Spots', 'lng', {
+        type: Sequelize.DECIMAL(11, 6),
+        allowNull: false
+      }, options);
+
+      await queryInterface.changeColumn('Spots', 'price', {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false
+      }, options);
+    }
   },
 
   async down(queryInterface, Sequelize) {
-    // Revert back to original precision
-    await queryInterface.changeColumn('Spots', 'lat', {
-      type: Sequelize.DECIMAL(10, 7),
-      allowNull: false
-    }, options);
+    // Check if table exists before trying to modify it
+    const tableExists = await queryInterface.showAllTables().then(tables => {
+      const tableName = options.schema ? `${options.schema}.Spots` : 'Spots';
+      return tables.includes('Spots') || tables.includes(tableName);
+    });
 
-    await queryInterface.changeColumn('Spots', 'lng', {
-      type: Sequelize.DECIMAL(10, 7),
-      allowNull: false
-    }, options);
+    if (tableExists) {
+      // Revert back to original precision
+      await queryInterface.changeColumn('Spots', 'lat', {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false
+      }, options);
 
-    await queryInterface.changeColumn('Spots', 'price', {
-      type: Sequelize.DECIMAL(10, 7),
-      allowNull: false
-    }, options);
+      await queryInterface.changeColumn('Spots', 'lng', {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false
+      }, options);
+
+      await queryInterface.changeColumn('Spots', 'price', {
+        type: Sequelize.DECIMAL(10, 7),
+        allowNull: false
+      }, options);
+    }
   }
-};
+}; 
