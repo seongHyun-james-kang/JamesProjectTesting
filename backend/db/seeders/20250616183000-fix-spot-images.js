@@ -1,13 +1,113 @@
 'use strict';
-const { SpotImage} = require('../models')
+const { SpotImage, Spot, User } = require('../models')
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
  options.schema = process.env.SCHEMA; // define your schema in options object
 }
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    // First, ensure all required users exist
+    const users = [
+      { 
+        id: 1,
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'demo@user.io',
+        username: 'Demo-lition',
+        hashedPassword: '$2a$10$8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8O' // placeholder hash
+      },
+      { 
+        id: 2,
+        firstName: 'Deb',
+        lastName: 'Ross',
+        email: 'user1@user.io',
+        username: 'FakeUser1',
+        hashedPassword: '$2a$10$8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8O'
+      },
+      {
+        id: 3,
+        firstName: 'Ben',
+        lastName: 'Ten',
+        email: 'user2@user.io',
+        username: 'FakeUser2',
+        hashedPassword: '$2a$10$8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8O'
+      }
+    ];
+
+    for (const userData of users) {
+      const existingUser = await User.findByPk(userData.id, options);
+      if (!existingUser) {
+        await User.create(userData, options);
+      }
+    }
+
+    // Then, ensure all required spots exist
+    const spots = [
+      {
+        id: 1,
+        ownerId: 1,
+        address: '123 Main St',
+        city: 'Los Angeles',
+        state: 'CA',
+        country: 'USA',
+        lat: 34.0522,
+        lng: -118.2437,
+        name: 'Cozy Apartment',
+        description: 'Best place to enjoy the city.',
+        price: 150.00
+      },
+      {
+        id: 2,
+        ownerId: 2,
+        address: '456 Ocean Ave',
+        city: 'Miami',
+        state: 'FL',
+        country: 'USA',
+        lat: 25.7617,
+        lng: -80.1918,
+        name: 'Beachfront Condo',
+        description: 'Wake up to the sound of waves crashing on the shore.',
+        price: 140.00
+      },
+      {
+        id: 3,
+        ownerId: 3,
+        address: '789 Mountain Rd',
+        city: 'Denver',
+        state: 'CO',
+        country: 'USA',
+        lat: 39.7392,
+        lng: -104.9903,
+        name: 'Mountain Cabin',
+        description: 'Become one with mountain.',
+        price: 175.00
+      },
+      {
+        id: 4,
+        ownerId: 1,
+        address: '2077 Edgerunner',
+        city: 'Night City',
+        state: 'NJ',
+        country: 'USA',
+        lat: 37.7749,
+        lng: -122.4194,
+        name: 'CyberPunk',
+        description: 'Step into the future and become one with Vi',
+        price: 1000
+      }
+    ];
+
+    for (const spotData of spots) {
+      const existingSpot = await Spot.findByPk(spotData.id, options);
+      if (!existingSpot) {
+        await Spot.create(spotData, options);
+      }
+    }
+
+    // Finally, create the spot images
     options.validate = true;
     await SpotImage.bulkCreate( [
         // Spot 1 – Cozy Apartment
