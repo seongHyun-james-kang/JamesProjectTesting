@@ -1,8 +1,3 @@
-
-steve song
-11:01 PM (0 minutes ago)
-to me
-
 'use strict';
 const { SpotImage, Spot, User } = require('../models')
 
