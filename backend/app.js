@@ -131,6 +131,10 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
+// action plan
+app.get('/', (req, res) => {
+  res.send('OK');
+});
 
 
 // Error formatter
