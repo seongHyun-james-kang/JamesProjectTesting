@@ -60,6 +60,7 @@ app.use(
         imgSrc: [
           "'self'",
           "data:",
+          "https://media.istockphoto.com",
           "https://www.constructionspecifier.com",
           "https://www.thespruce.com",
           "https://www.oppeinhome.com",
