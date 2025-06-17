@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    options.validate = true;
     await SpotImage.bulkCreate( [
         // Spot 1 – Cozy Apartment
         { spotId: 1, url: 'https://www.constructionspecifier.com/wp-content/uploads/2023/07/ankrom-moisan-mass-timber-building-ai-rendering-1.jpg', preview: true },
@@ -38,9 +39,10 @@ module.exports = {
         { spotId: 4, url: 'https://i.ytimg.com/vi/LLBCDkq4QjE/sddefault.jpg', preview: false },
    
       
-      ]);
+      ], options);
     },
-  async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("SpotImages", null, {});
-  }
-};
+    async down(queryInterface, Sequelize) {
+      options.tableName = 'SpotImages';
+      await queryInterface.bulkDelete('SpotImages', null, options);
+    }
+  };
