@@ -33,3 +33,5 @@ module.exports = {
     return queryInterface.bulkDelete(options, { id: 4 }, {});
   }
 }; 
+
+
