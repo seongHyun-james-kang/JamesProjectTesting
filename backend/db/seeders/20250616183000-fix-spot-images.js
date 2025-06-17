@@ -1,4 +1,4 @@
-use strict';
+'use strict';
 const { SpotImage} = require('../models')
 
 let options = {};
