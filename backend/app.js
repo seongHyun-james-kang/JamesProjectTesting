@@ -31,7 +31,8 @@ app.use(express.json());
 // Security Middleware
 const allowedOrigins = [
   'https://app-academy-projects-frontend.onrender.com',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://localhost:5174'
 ];
 app.use(
   cors({
@@ -45,7 +46,43 @@ app.use(
       policy: "cross-origin"
     })
   );
-  
+
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://cdnjs.cloudflare.com'
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "www.constructionspecifier.com",
+          "www.thespruce.com",
+          "www.oppeinhome.com",
+          "media.designcafe.com",
+          "i.homeadore.com",
+          "cwimages.imgix.net",
+          "media.scurto.net",
+          "a0.muscache.com",
+          "images.ctfassets.net",
+          "images.unsplash.com",
+          "i.lmpm.com",
+          "cdn.liverez.com",
+          "escapetoblueridge.icnd-cdn.com",
+          "www.nps.gov",
+          "rare-gallery.com",
+          "i.redd.it",
+          "v.etsystatic.com",
+          "i.ytimg.com"
+        ]
+      }
+    })
+  )
+
   // Set the _csrf token and create req.csrfToken method
   app.use(
     csurf({
@@ -118,5 +155,3 @@ app.use((err, _req, res, _next) => {
   }
   
   module.exports = app;
-
-
