@@ -28,7 +28,7 @@ module.exports = {
         startDate: '2025-10-15',
         endDate: '2025-10-17',
       },
-    ], { validate: true });
+    ], { validate: true, ...options });
   },
 
   async down (queryInterface, Sequelize) {

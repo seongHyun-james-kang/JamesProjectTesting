@@ -62,7 +62,7 @@ module.exports = {
         price: 1000
       }
 
-    ]);
+    ], options);
   },
 
   async down (queryInterface, Sequelize) {

@@ -32,7 +32,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       
-    ]);
+    ], options);
   },
 
   async down(queryInterface, Sequelize) {

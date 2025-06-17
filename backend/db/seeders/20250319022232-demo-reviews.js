@@ -57,7 +57,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       }
-    ]);
+    ], options);
   },
 
   async down(queryInterface, Sequelize) {
